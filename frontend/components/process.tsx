@@ -66,7 +66,7 @@ export default function Process() {
                     </div>
                     <div className="flex justify-center mt-8">
                         <Link href="/auth/register">
-                            <Button size="lg">Begin Your Application</Button>
+                            <Button size="lg" className='cursor-pointer'>Begin Your Application</Button>
                         </Link>
                     </div>
                 </div>

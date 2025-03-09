@@ -32,8 +32,8 @@ export default function EligibilitySection() {
                                 </ul>
                             </CardContent>
                             <CardFooter>
-                                <Link href="/eligibility/residency">
-                                    <Button variant="outline" size="sm">
+                                <Link href="">
+                                    <Button variant="outline" size="sm" className='cursor-pointer' >
                                         Learn more
                                     </Button>
                                 </Link>
@@ -53,8 +53,8 @@ export default function EligibilitySection() {
                                 </ul>
                             </CardContent>
                             <CardFooter>
-                                <Link href="/eligibility/personal">
-                                    <Button variant="outline" size="sm">
+                                <Link href="">
+                                    <Button variant="outline" size="sm" className='cursor-pointer'>
                                         Learn more
                                     </Button>
                                 </Link>
@@ -63,7 +63,7 @@ export default function EligibilitySection() {
                     </div>
                     <div className="flex justify-center mt-8">
                         <Link href="/eligibility/check">
-                            <Button size="lg">Check Your Eligibility</Button>
+                            <Button size="lg" className='cursor-pointer'>Check Your Eligibility</Button>
                         </Link>
                     </div>
                 </div>

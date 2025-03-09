@@ -1,40 +1,61 @@
-import Link from 'next/link'
+"use client"
+
 import React from 'react'
 import { Button } from './ui/button'
+import Image from 'next/image'
 
 export default function Navbar() {
+    const scrollToSection = (id: string) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
     return (
-        <div className=' px-6 border-b py-4 flex justify-between items-center sticky top-0 z-50 bg-white/15 backdrop-blur-md'>
-            <div className='flex  gap-2'>
-                <p>logo</p>
-                <p>SNS</p>
-            </div>
+        <div className='px-6 border-b py-4 flex justify-between items-center sticky top-0 z-50 bg-white/30 backdrop-blur-md'>
+            <a href="/" className="flex gap-2 items-center">
+                <div className="flex justify-center">
+                    <Image
+                        src="/SNS_LOGO.webp"
+                        alt="Citizenship Application"
+                        width={40}
+                        height={40}
+                        className="rounded-lg shadow-lg"
+                    />
+                </div>
+                <p className='text-sm font-semibold'>Sajilo Nagarik Sewa</p>
+            </a>
+
             <div className='hidden md:flex gap-6'>
-                <Link href="/" className="text-sm font-medium">
+                <button onClick={() => scrollToSection("home")} className="text-md font-medium cursor-pointer">
                     Home
-                </Link>
-                <Link href="#eligibility" className="text-sm font-medium">
+                </button>
+                <button onClick={() => scrollToSection("eligibility")} className="text-md font-medium cursor-pointer">
                     Eligibility
-                </Link>
-                <Link href="#process" className="text-sm font-medium">
+                </button>
+                <button onClick={() => scrollToSection("documents")} className="text-md font-medium cursor-pointer">
+                    Documents
+                </button>
+                <button onClick={() => scrollToSection("process")} className="text-md font-medium cursor-pointer">
                     Process
-                </Link>
-                <Link href="#faq" className="text-sm font-medium">
+                </button>
+                <button onClick={() => scrollToSection("faq")} className="text-md font-medium cursor-pointer">
                     FAQ
-                </Link>
-                <Link href="#contact" className="text-sm font-medium">
+                </button>
+                <button onClick={() => scrollToSection("contact")} className="text-md font-medium cursor-pointer">
                     Contact
-                </Link>
+                </button>
             </div>
 
             <div className="flex items-center gap-4">
-                <Link href="/auth/login">
-                    <Button variant="outline">Log in</Button>
-                </Link>
-                <Link href="/auth/register">
-                    <Button>Register</Button>
-                </Link>
+                <a href="/auth/login">
+                    <Button variant="outline" className='cursor-pointer'>Log in</Button>
+                </a>
+                <a href="/auth/register">
+                    <Button className='cursor-pointer'>Register</Button>
+                </a>
             </div>
         </div>
-    )
+    );
 }

@@ -7,7 +7,7 @@ import { CheckCircle, Clock, HelpCircle } from 'lucide-react'
 
 export default function HeroSection() {
     return (
-        <div>
+        <div id='home'>
 
 
             <section className="bg-gradient-to-r from-blue-50 to-indigo-50 py-16 md:py-24">
@@ -18,13 +18,13 @@ export default function HeroSection() {
                             A simple, secure, and efficient way to submit your citizenship application from anywhere, anytime.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-3">
-                            <Link href="/apply">
-                                <Button size="lg" className="w-full sm:w-auto">
+                            <Link href="#">
+                                <Button size="lg" className="w-full sm:w-auto cursor-pointer">
                                     Start Application
                                 </Button>
                             </Link>
                             <Link href="#eligibility">
-                                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                                <Button variant="outline" size="lg" className="w-full sm:w-auto cursor-pointer">
                                     Check Eligibility
                                 </Button>
                             </Link>
