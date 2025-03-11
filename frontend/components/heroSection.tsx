@@ -18,11 +18,13 @@ export default function HeroSection() {
                             A simple, secure, and efficient way to submit your citizenship application from anywhere, anytime.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-3">
-                            <Link href="#">
+
+                            <a href="/form">
                                 <Button size="lg" className="w-full sm:w-auto cursor-pointer">
                                     Start Application
                                 </Button>
-                            </Link>
+                            </a>
+
                             <Link href="#eligibility">
                                 <Button variant="outline" size="lg" className="w-full sm:w-auto cursor-pointer">
                                     Check Eligibility
