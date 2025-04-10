@@ -62,7 +62,7 @@ export default function EligibilitySection() {
                         </Card>
                     </div>
                     <div className="flex justify-center mt-8">
-                        <Link href="/eligibility/check">
+                        <Link href="/form">
                             <Button size="lg" className='cursor-pointer'>Check Your Eligibility</Button>
                         </Link>
                     </div>

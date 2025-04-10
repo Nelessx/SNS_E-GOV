@@ -17,7 +17,7 @@ export default function Navbar() {
             <a href="/" className="flex gap-2 items-center">
                 <div className="flex justify-center">
                     <Image
-                        src="/SNS_LOGO.webp"
+                        src="/snslogo3.png"
                         alt="Citizenship Application"
                         width={40}
                         height={40}

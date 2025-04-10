@@ -18,7 +18,7 @@ export default function CtaSection() {
                             </p>
                         </div>
                         <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                            <Link href="/auth/register">
+                            <Link href="/form">
                                 <Button size="lg" variant="secondary" className="gap-1 cursor-pointer">
                                     Start Application <ArrowRight className="h-4 w-4" />
                                 </Button>
