@@ -24,6 +24,36 @@ export default function ReviewSubmit({ formData, validateStep, stepIndex }: Revi
     return date.toLocaleDateString()
   }
 
+  // Group documents by category
+  const getDocumentsByCategory = () => {
+    const docs = formData.documents || {};
+    
+    const requiredDocs = {
+      birthCertificate: docs.birthCertificate,
+      parentCitizenship: docs.parentCitizenship,
+      wardRecommendation: docs.wardRecommendation,
+      applicantPhoto: docs.applicantPhoto,
+      parentsMarriageCertificate: docs.parentsMarriageCertificate,
+    };
+    
+    const additionalDocs = {
+      schoolCertificate: docs.schoolCertificate,
+      hospitalBirth: docs.hospitalBirth,
+      migrationCertificate: docs.migrationCertificate,
+      fathersMigration: docs.fathersMigration,
+    };
+    
+    const marriageDocs = {
+      marriageCertificate: docs.marriageCertificate,
+      spouseCitizenship: docs.spouseCitizenship,
+      spouseMigration: docs.spouseMigration,
+    };
+    
+    return { requiredDocs, additionalDocs, marriageDocs };
+  };
+  
+  const { requiredDocs, additionalDocs, marriageDocs } = getDocumentsByCategory();
+
   return (
     <div className="space-y-6">
       <div>
@@ -87,12 +117,29 @@ export default function ReviewSubmit({ formData, validateStep, stepIndex }: Revi
               <p className="text-sm text-muted-foreground">{formatDate(formData.dateOfBirth)}</p>
             </div>
             <div>
+              <p className="text-sm font-medium">Place of Birth:</p>
+              <p className="text-sm text-muted-foreground">{formData.placeOfBirth || "Not provided"}</p>
+            </div>
+            <div>
               <p className="text-sm font-medium">Email:</p>
               <p className="text-sm text-muted-foreground">{formData.email}</p>
             </div>
             <div>
               <p className="text-sm font-medium">Phone:</p>
               <p className="text-sm text-muted-foreground">{formData.phone}</p>
+            </div>
+          </div>
+
+          <Separator />
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <p className="text-sm font-medium">Father's Name:</p>
+              <p className="text-sm text-muted-foreground">{formData.fathersName || "Not provided"}</p>
+            </div>
+            <div>
+              <p className="text-sm font-medium">Mother's Name:</p>
+              <p className="text-sm text-muted-foreground">{formData.mothersName || "Not provided"}</p>
             </div>
           </div>
 
@@ -203,18 +250,53 @@ export default function ReviewSubmit({ formData, validateStep, stepIndex }: Revi
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <p className="text-sm font-medium mb-2">Uploaded Documents:</p>
+            <p className="text-sm font-medium mb-2">Basic Required Documents:</p>
             <div className="space-y-2">
-              {Object.entries(formData.documents || {}).map(
-                ([key, value]) =>
-                  value && (
-                    <div key={key} className="flex items-center">
-                      <FileText className="h-4 w-4 mr-2 text-primary" />
-                      <p className="text-sm text-muted-foreground capitalize">
-                        {key.replace(/([A-Z])/g, " $1").trim()}: {value.name}
-                      </p>
-                    </div>
-                  ),
+              {Object.entries(requiredDocs).map(
+                ([key, value]) => (
+                  <div key={key} className="flex items-center">
+                    <FileText className="h-4 w-4 mr-2 text-primary" />
+                    <p className="text-sm text-muted-foreground capitalize">
+                      {key.replace(/([A-Z])/g, " $1").trim()}: {value ? value.name : "Not uploaded"}
+                    </p>
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+
+          <Separator />
+
+          <div>
+            <p className="text-sm font-medium mb-2">Additional Documents:</p>
+            <div className="space-y-2">
+              {Object.entries(additionalDocs).map(
+                ([key, value]) => (
+                  <div key={key} className="flex items-center">
+                    <FileText className="h-4 w-4 mr-2 text-muted-foreground" />
+                    <p className="text-sm text-muted-foreground capitalize">
+                      {key.replace(/([A-Z])/g, " $1").trim()}: {value ? value.name : "Not uploaded"}
+                    </p>
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+
+          <Separator />
+
+          <div>
+            <p className="text-sm font-medium mb-2">Marriage Documents:</p>
+            <div className="space-y-2">
+              {Object.entries(marriageDocs).map(
+                ([key, value]) => (
+                  <div key={key} className="flex items-center">
+                    <FileText className="h-4 w-4 mr-2 text-muted-foreground" />
+                    <p className="text-sm text-muted-foreground capitalize">
+                      {key.replace(/([A-Z])/g, " $1").trim()}: {value ? value.name : "Not uploaded"}
+                    </p>
+                  </div>
+                )
               )}
             </div>
           </div>

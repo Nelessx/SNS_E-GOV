@@ -17,11 +17,18 @@ export default function DocumentUpload({ formData, updateFormData, validateStep,
   const [documents, setDocuments] = useState(
     formData.documents || {
       birthCertificate: null,
-      passport: null,
-      residencyProof: null,
-      financialDocuments: null,
-      idPhotos: null,
-    },
+      parentCitizenship: null,
+      parentsMarriageCertificate: null,
+      wardRecommendation: null,
+      applicantPhoto: null,
+      schoolCertificate: null,
+      hospitalBirth: null,
+      migrationCertificate: null,
+      fathersMigration: null,
+      marriageCertificate: null,
+      spouseCitizenship: null,
+      spouseMigration: null,
+    }
   )
 
   const [localDocuments, setLocalDocuments] = useState(documents)
@@ -41,21 +48,16 @@ export default function DocumentUpload({ formData, updateFormData, validateStep,
   }
 
   useEffect(() => {
-    // Check if at least three required documents are uploaded
-    const requiredDocuments = ["birthCertificate", "passport", "residencyProof"]
-    const uploadedRequiredCount = requiredDocuments.filter((doc) => localDocuments[doc] !== null).length
-    const isValid = uploadedRequiredCount >= 3
+    const requiredDocs = ["birthCertificate", "parentCitizenship", "wardRecommendation", "applicantPhoto"]
+    const uploadedCount = requiredDocs.filter((doc) => localDocuments[doc] !== null).length
+    const isValid = uploadedCount >= requiredDocs.length
 
-    // Update form data
     updateFormData({ documents: localDocuments })
-
-    // Validate step
     validateStep(stepIndex, isValid)
   }, [localDocuments, updateFormData, validateStep, stepIndex])
 
-  const renderUploadCard = (title, description, documentType, required = true) => {
+  const renderUploadCard = (title, description, documentType, required = false) => {
     const file = localDocuments[documentType]
-
     return (
       <Card className="overflow-hidden">
         <CardHeader className="pb-3">
@@ -104,32 +106,40 @@ export default function DocumentUpload({ formData, updateFormData, validateStep,
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
         <h2 className="text-2xl font-bold">Document Upload</h2>
-        <p className="text-muted-foreground">Please upload the required documents for your application.</p>
+        <p className="text-muted-foreground">Please upload the documents based on your case.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {renderUploadCard("Birth Certificate", "Upload a copy of your birth certificate", "birthCertificate", true)}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold">Basic Required Documents</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {renderUploadCard("Birth Certificate", "Upload your birth certificate", "birthCertificate", true)}
+          {renderUploadCard("Parent's Citizenship", "Upload father's or mother's citizenship", "parentCitizenship", true)}
+          {renderUploadCard("Ward Recommendation", "Upload recommendation letter from Ward Office", "wardRecommendation", true)}
+          {renderUploadCard("Applicant Photo", "Upload your passport-sized photo", "applicantPhoto", true)}
+          {renderUploadCard("Parents' Marriage Certificate", "Upload if applicable", "parentsMarriageCertificate", false)}
+        </div>
+      </div>
 
-        {renderUploadCard("Passport", "Upload a copy of your passport", "passport", true)}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold">Additional Documents (If Applicable)</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {renderUploadCard("School Certificate (SLC/SEE)", "Upload your SLC/SEE certificate", "schoolCertificate", false)}
+          {renderUploadCard("Hospital Birth Registration", "Upload if available", "hospitalBirth", false)}
+          {renderUploadCard("Migration Certificate", "If you’ve migrated from another place", "migrationCertificate", false)}
+          {renderUploadCard("Father’s Migration Certificate", "If you're born outside father's original district", "fathersMigration", false)}
+        </div>
+      </div>
 
-        {renderUploadCard(
-          "Proof of Residency",
-          "Upload a document proving your current address",
-          "residencyProof",
-          true,
-        )}
-
-        {renderUploadCard(
-          "Financial Documentation",
-          "Upload bank statements or proof of income",
-          "financialDocuments",
-          false,
-        )}
-
-        {renderUploadCard("ID Photos", "Upload recent passport-style photos", "idPhotos", false)}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold">For Married Applicants</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {renderUploadCard("Marriage Certificate", "Upload your marriage certificate", "marriageCertificate", false)}
+          {renderUploadCard("Spouse's Citizenship", "Husband’s or Wife’s Citizenship", "spouseCitizenship", false)}
+          {renderUploadCard("Spouse’s Migration Certificate", "If changing district after marriage", "spouseMigration", false)}
+        </div>
       </div>
 
       <div className="bg-muted p-4 rounded-lg mt-6">
@@ -142,9 +152,8 @@ export default function DocumentUpload({ formData, updateFormData, validateStep,
             <ul className="text-sm text-muted-foreground mt-1 space-y-1">
               <li>• All documents must be clear and legible</li>
               <li>• Files must be in PDF, JPG, or PNG format</li>
-              <li>• Maximum file size is 10MB per document</li>
+              <li>• Max file size: 10MB per document</li>
               <li>• Documents marked with * are required</li>
-              <li>• At least three required documents must be uploaded to proceed</li>
             </ul>
           </div>
         </div>
