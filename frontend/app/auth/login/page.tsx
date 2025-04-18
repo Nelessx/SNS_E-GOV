@@ -19,14 +19,35 @@ export default function Page() {
   const [showPassword, setShowPassword] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const formData = new FormData(e.currentTarget)
+    const email = formData.get("email")
+    const password = formData.get("password")
     e.preventDefault()
     setIsLoading(true)
 
     // Simulate login process
-    setTimeout(() => {
-      setIsLoading(false)
-      router.push("/dashboard")
-    }, 1500)
+    try {
+        const res = await fetch("/api/personinformation", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email, password })
+        })
+    
+        if (!res.ok) {
+          throw new Error("Login failed")
+        }
+    
+        // Example: redirect on success
+        router.push("/dashboard")
+      } catch (error) {
+        console.error(error)
+        // Optionally show error to user
+      } finally {
+        setIsLoading(false)
+      }
+    }
   }
 
   return (
