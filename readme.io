@@ -1,0 +1,34 @@
+USRM9NWDQRCZFDKZ
+
+USRM9NXYY73Q1BIO
+
+
+
+
+
+admin token
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJBRE0wMDEiLCJyb2xlIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQHNucy5jb20iLCJpYXQiOjE3NDUwNDk4OTAsImV4cCI6MTc0NTEzNjI5MH0.g7PmKn7dHb_JHf9ffOJhMo7zqeY2mxkAOSpjmsF-bW0
+
+
+
+test admin
+http://localhost:5000/api/auth/approve-user/USRM9NXYY73Q1BIO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+USRM9NYBUDWTJDHA
+
+
+
+68035d98aecf532940b37ac7    USRM9NYBUDWTJDHA

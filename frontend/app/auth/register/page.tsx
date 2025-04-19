@@ -1,11 +1,11 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Eye, EyeOff, FileText, Loader2 } from "lucide-react"
+import { Eye, EyeOff, Loader2 } from "lucide-react"
+import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -18,22 +18,54 @@ export default function RegisterPage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: ""
+  })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
 
-    // Simulate registration process
-    setTimeout(() => {
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: `${formData.firstName} ${formData.lastName}`,
+          email: formData.email,
+          password: formData.password
+        })
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        toast.success("Registration successful! Waiting for admin approval.")
+        router.push("/auth/login")
+      } else {
+        toast.error(data.message || "Registration failed")
+      }
+    } catch (error) {
+      toast.error("An error occurred during registration")
+    } finally {
       setIsLoading(false)
-      router.push("/dashboard")
-    }, 1500)
+    }
   }
 
   return (
     <div className="flex min-h-screen flex-col">
-      
-
       <main className="flex-1 flex items-center justify-center p-4 md:p-8">
         <Card className="w-full max-w-md bg-gray-300/20">
           <CardHeader className="space-y-1">
@@ -44,22 +76,52 @@ export default function RegisterPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="first-name">First name</Label>
-                  <Input id="first-name" placeholder="John" required />
+                  <Label htmlFor="firstName">First name</Label>
+                  <Input 
+                    id="firstName" 
+                    name="firstName"
+                    placeholder="John" 
+                    required 
+                    value={formData.firstName}
+                    onChange={handleChange}
+                  />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="last-name">Last name</Label>
-                  <Input id="last-name" placeholder="Doe" required />
+                  <Label htmlFor="lastName">Last name</Label>
+                  <Input 
+                    id="lastName" 
+                    name="lastName"
+                    placeholder="Doe" 
+                    required 
+                    value={formData.lastName}
+                    onChange={handleChange}
+                  />
                 </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="name@example.com" required />
+                <Input 
+                  id="email" 
+                  name="email"
+                  type="email" 
+                  placeholder="name@example.com" 
+                  required 
+                  value={formData.email}
+                  onChange={handleChange}
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <div className="relative">
-                  <Input id="password" type={showPassword ? "text" : "password"} placeholder="••••••••" required />
+                  <Input 
+                    id="password" 
+                    name="password"
+                    type={showPassword ? "text" : "password"} 
+                    placeholder="••••••••" 
+                    required 
+                    value={formData.password}
+                    onChange={handleChange}
+                  />
                   <Button
                     type="button"
                     variant="ghost"
@@ -156,4 +218,3 @@ export default function RegisterPage() {
     </div>
   )
 }
-

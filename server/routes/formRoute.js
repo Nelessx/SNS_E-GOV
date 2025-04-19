@@ -1,12 +1,22 @@
-import express from "express";
-
-import { createForm, deleteForm, getForms, updateForm } from "../controllers/formController.js";
+import express from 'express';
+import { authenticate, isAdmin } from '../middleware/authMiddleware.js';
+import { 
+  submitForm, 
+  getAllForms, 
+  getUserForms, 
+  approveForm, 
+  rejectForm 
+} from '../controllers/formController.js';
 
 const router = express.Router();
 
-router.get("/", getForms);
-router.post("/", createForm);
-router.patch("/:id", updateForm);
-router.delete("/:id", deleteForm);
+// User routes
+router.post('/submit', authenticate, submitForm);
+router.get('/my-forms', authenticate, getUserForms);
+
+// Admin routes
+router.get('/all', authenticate, isAdmin, getAllForms);
+router.put('/approve/:applicationId', authenticate, isAdmin, approveForm);
+router.put('/reject/:applicationId', authenticate, isAdmin, rejectForm);
 
 export default router;

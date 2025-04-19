@@ -6,6 +6,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Eye, EyeOff, FileText, Loader2 } from "lucide-react"
+import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -17,43 +18,59 @@ export default function Page() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [formData, setFormData] = useState({
+    email: "",
+    password: ""
+  })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    const formData = new FormData(e.currentTarget)
-    const email = formData.get("email")
-    const password = formData.get("password")
     e.preventDefault()
     setIsLoading(true)
 
-    // Simulate login process
     try {
-        const res = await fetch("/api/personinformation", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ email, password })
-        })
-    
-        if (!res.ok) {
-          throw new Error("Login failed")
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        // Store token and user data
+        localStorage.setItem("token", data.token)
+        localStorage.setItem("user", JSON.stringify(data.user))
+        
+        toast.success("Login successful!")
+        
+        // Redirect based on role
+        if (data.user.role === "admin") {
+          router.push("/admin/dashboard")
+        } else {
+          router.push("/dashboard")
         }
-    
-        // Example: redirect on success
-        router.push("/dashboard")
-      } catch (error) {
-        console.error(error)
-        // Optionally show error to user
-      } finally {
-        setIsLoading(false)
+      } else {
+        toast.error(data.message || "Login failed")
       }
+    } catch (error) {
+      toast.error("An error occurred during login")
+    } finally {
+      setIsLoading(false)
     }
   }
 
   return (
     <div className="flex min-h-screen flex-col">
-      
-      <main className="flex-1 flex items-center justify-center p-4 md:p-8 ">
+      <main className="flex-1 flex items-center justify-center p-4 md:p-8">
         <Card className="w-full max-w-md bg-gray-300/20">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold">Log in</CardTitle>
@@ -63,7 +80,15 @@ export default function Page() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="name@example.com" required />
+                <Input 
+                  id="email" 
+                  name="email"
+                  type="email" 
+                  placeholder="name@example.com" 
+                  required 
+                  value={formData.email}
+                  onChange={handleChange}
+                />
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
@@ -73,7 +98,15 @@ export default function Page() {
                   </Link>
                 </div>
                 <div className="relative">
-                  <Input id="password" type={showPassword ? "text" : "password"} placeholder="••••••••" required />
+                  <Input 
+                    id="password" 
+                    name="password"
+                    type={showPassword ? "text" : "password"} 
+                    placeholder="••••••••" 
+                    required 
+                    value={formData.password}
+                    onChange={handleChange}
+                  />
                   <Button
                     type="button"
                     variant="ghost"
@@ -123,7 +156,7 @@ export default function Page() {
                     fill="#34A853"
                   />
                   <path
-                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.85-2.22.81-.62z"
                     fill="#FBBC05"
                   />
                   <path
