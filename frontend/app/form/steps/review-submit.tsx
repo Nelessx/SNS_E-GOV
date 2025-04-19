@@ -72,7 +72,7 @@ export default function ReviewSubmit({ formData, validateStep, stepIndex }: Revi
         </Alert>
       )}
 
-      <Card>
+      <Card>    
         <CardHeader>
           <CardTitle className="flex items-center">
             <CheckCircle className="h-5 w-5 mr-2 text-primary" />
